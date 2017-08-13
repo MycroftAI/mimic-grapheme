@@ -14,8 +14,15 @@ sources = [
 includes = [include_directories('include')]
 
 # Core Dependency:
-mimiccore = dependency('ttsmimic_core')
+mimiccore = dependency('ttsmimic_core', required: false)
+if mimiccore.found()
 mimic_plugin_dir = mimiccore.get_pkgconfig_variable('mimic_plugin_dir')
+else
+  # We compile it:
+  mimic_core_sub = subproject('mimic-core')
+  mimiccore = mimic_core_sub.get_variable('ttsmimiccore_dep')
+  mimic_plugin_dir = mimic_core_sub.get_variable('mimic_plugin_dir')
+endif
 
 # If mimic-core does not have plugin support, disable the plugin
 if mimic_plugin_dir == ''
@@ -40,7 +47,7 @@ ttsmimic_grapheme_lib = library('ttsmimic_grapheme', sources,
                                 dependencies: mimiccore,
                                 install: true)
 
-ttsmimiclib_grapheme_dep = declare_dependency(link_with : ttsmimic_grapheme_lib, 
+ttsmimic_grapheme_dep = declare_dependency(link_with : ttsmimic_grapheme_lib, 
                                               include_directories : includes)
 
 
@@ -49,11 +56,11 @@ if build_plugin
     'ttsmimic_grapheme_plugin',
     ['src/mimic_grapheme_plugin.c'],
     include_directories : includes,
-    dependencies: [mimiccore, ttsmimiclib_grapheme_dep],
+    dependencies: [mimiccore, ttsmimic_grapheme_dep],
     install_dir: mimic_plugin_dir,
     install: true)
 
-  ttsmimiclib_grapheme_plugin_dep = declare_dependency(
+  ttsmimic_grapheme_plugin_dep = declare_dependency(
     link_with : ttsmimic_grapheme_plugin_lib, 
     include_directories : includes)
 endif
