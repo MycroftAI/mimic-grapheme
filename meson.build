@@ -11,7 +11,7 @@ sources = [
   'src/cmu_grapheme_lex/grapheme_unitran_tables.c'
 ]
 
-includes = [include_directories('include')]
+includes = [include_directories('include'), include_directories('.')]
 
 # Core Dependency:
 mimiccore = dependency('ttsmimic_core', required: false)
