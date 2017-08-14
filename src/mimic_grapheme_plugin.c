@@ -33,13 +33,9 @@
  * 
  */
 
-#include "mimic_grapheme_config.h"
 #include "cmu_grapheme_lang.h"
 #include "cmu_grapheme_lex.h"
-#include "mimic.h"
-
-#ifndef ENABLE_LANG_GRAPHEME_BUILTIN
 #include "cst_plugins.h"
+
 mimic_plugin_t mimic_plugin = { "mimic-grapheme", 0, &grapheme_plugin_init, &grapheme_plugin_exit};
-#endif
 

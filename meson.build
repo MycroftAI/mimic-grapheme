@@ -33,15 +33,6 @@ message('Build mimic-grapheme plugin: @0@'.format(build_plugin))
 
 grapheme_header_subdir = join_paths('ttsmimic', 'lang', 'grapheme')
 
-conf_data = configuration_data()
-conf_data.set('ENABLE_LANG_GRAPHEME_BUILTIN', not build_plugin)
-
-mimic_grapheme_config_h = configure_file(output : 'mimic_grapheme_config.h',
-                                         configuration : conf_data, install: true,
-                                         install_dir : join_paths(get_option('includedir'), grapheme_header_subdir))
-
-sources += [mimic_grapheme_config_h]
-
 ttsmimic_grapheme_lib = library('ttsmimic_grapheme', sources,
                                 include_directories : includes,
                                 dependencies: mimiccore,
